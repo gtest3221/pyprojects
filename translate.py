@@ -2,6 +2,8 @@ from moviepy.editor import VideoFileClip
 import speech_recognition as sr
 from googletrans import Translator
 
+#Added some comments to clarify the purpose of each function
+
 def translate_video(video_path, output_audio_path="extracted_audio.wav", output_text_file="translated_text.txt"):
     # 1. Extract Audio
     print("Extracting audio...")
