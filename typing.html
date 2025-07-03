@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <title>Document</title>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+  <div x-data="searchBar" class="relative w-96">
+    <input type="text" :placeholder="currentPlaceholder" class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <button class="absolute right-3 top-3 text-gray-500">
+        🔍
+    </button>
+</div>
+<script>
+  document.addEventListener('alpine:init', ()=>{
+    Alpine.data('searchBar', ()=>({
+      placeholders: ['Laptop', 'Mobile', 'T-shirt', 'Headphone', 'Shoes'],
+      currentPlaceholder: '',
+      index: 0,
+      charIndex: 0,
+      typingSpeed: 100,
+      deletingSpeed: 50,
+      isDeleting: false,
+      init(){
+        this.typeEffect()
+      },
+      typeEffect() {
+          let word = this.placeholders[this.index];
+          if (this.isDeleting) {
+              this.currentPlaceholder = word.substring(0, this.charIndex--);
+          } else {
+              this.currentPlaceholder = word.substring(0, this.charIndex++);
+          }
+          if (!this.isDeleting && this.charIndex === word.length) {
+              setTimeout(() => this.isDeleting = true, 1000);
+          } else if (this.isDeleting && this.charIndex === 0) {
+              this.isDeleting = false;
+              this.index = (this.index + 1) % this.placeholders.length;
+          }
+          setTimeout(() => this.typeEffect(), this.isDeleting ? this.deletingSpeed : this.typingSpeed);
+      }
+    }))
+  })
+</script>
+</body>
+</html>
